@@ -2,7 +2,7 @@ import React from "react";
 import './TodoItem.css';
 
 const TodoItems = (props) => {
-    let { data } = props;
+    let { data } = props; // destructuring from props
     let listItem = data.map((ls, index) => {
         return (
             <div key={ls.key}>
