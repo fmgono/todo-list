@@ -5,7 +5,7 @@ export default class TodoList extends Component {
     // Declare our state
     state = {
         items: [], //for list of todo Item
-        readonly: true, // for input type attribute
+        isReadOnly: true, // for input type attribute
         label: 'Edit' //for button label
     }
 
@@ -28,12 +28,12 @@ export default class TodoList extends Component {
         if (e.type === 'keypress') { // so checking if event type is keypress ?
             if ((inputValue !== '' && e.key === 'Enter')) { // is keyboard is Enter ?
                 this.setState({items: this.state.items.concat(newItem)}); // merge it to state
-                inputValue = ''; // empty  the inputValue element
+                this._inputElement.value = '';
             }
         }else { // event type is click ?
             if (inputValue !== '') {
                 this.setState({items: this.state.items.concat(newItem)}); // merge it to state
-                inputValue = ''; // empty  the inputValue element
+                this._inputElement.value = '';
             }
         }
 
@@ -44,7 +44,7 @@ export default class TodoList extends Component {
     * @param index is from the child components. Its rendered with map method
     */
     deleteItemHandler = index => {
-        const undeletedItems = this.state.items.filter((val, i) => i !== index); // filter the undeleted Items from the state
+        const undeletedItems = this.state.items.filter((item, i) => i !== index); // filter the undeleted Items from the state
         this.setState({items: undeletedItems}); // merge it to state
     }
 
@@ -55,7 +55,7 @@ export default class TodoList extends Component {
     editItemHandler = (key) => {
         if (this.state.label === 'Edit') { //check the label button is Edit or Done ?
             this.setState({
-                readonly: !this.state.readonly, //change readonly
+                readonly: !this.state.isReadOnly, //change readonly
                 label: 'Done' //  change label
             });
             this.refEdit.focus(); // focus the editElement
@@ -76,7 +76,7 @@ export default class TodoList extends Component {
                 <TodoItems data={this.state.items}
                            delete={this.deleteItemHandler} 
                            edit={this.editItemHandler} 
-                           readonly={this.state.readonly}
+                           readonly={this.state.isReadOnly}
                            refEdit={el => this.refEdit = el}
                            label={this.state.label} />
             </div>
