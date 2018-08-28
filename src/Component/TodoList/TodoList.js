@@ -55,7 +55,7 @@ export default class TodoList extends Component {
     editItemHandler = (key) => {
         if (this.state.label === 'Edit') { //check the label button is Edit or Done ?
             this.setState({
-                readonly: !this.state.isReadOnly, //change readonly
+                isReadOnly: !this.state.isReadOnly, //change readonly
                 label: 'Done' //  change label
             });
             this.refEdit.focus(); // focus the editElement
@@ -64,7 +64,7 @@ export default class TodoList extends Component {
             changedItem[0].todoText = this.refEdit.value;
             
             this.setState(() => ({...this.state.items, changedItem}) ); //merge it with state.
-            this.setState({label: 'Edit'});
+            this.setState({label: 'Edit', isReadOnly: !this.state.isReadOnly});
         }
     }
 
@@ -74,8 +74,8 @@ export default class TodoList extends Component {
                 <input className="todoInput" type="text" ref={(a) => this._inputElement = a} onKeyPress={(e) => this.addItemHandler(e)} />
                 <input className="btn-add" type="button" value="+" onClick={(e) => this.addItemHandler(e)} />
                 <TodoItems data={this.state.items}
-                           delete={this.deleteItemHandler} 
-                           edit={this.editItemHandler} 
+                           delete={this.deleteItemHandler}
+                           edit={this.editItemHandler}
                            readonly={this.state.isReadOnly}
                            refEdit={el => this.refEdit = el}
                            label={this.state.label} />
