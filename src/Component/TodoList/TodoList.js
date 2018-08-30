@@ -19,7 +19,9 @@ export default class TodoList extends Component {
         //Create object to merge state
         let newItem = {
             todoText: inputValue,
-            key: Date.now() // properties for looping
+            key: Date.now(), // properties for looping
+            btnLabel: 'Edit',
+            isReadOnly: true
         };
 
         /* 
@@ -49,23 +51,32 @@ export default class TodoList extends Component {
     }
 
     /**
-    * TODO : Edit item from the list
-    * @param key is from the state. Its rendered with map method in <TodoItem />.
+    * TODO : Edit label & property from the list
+    * @param index is from the state. Its rendered with map method in <TodoItem />.
     */
-    editItemHandler = (key) => {
-        if (this.state.label === 'Edit') { //check the label button is Edit or Done ?
-            this.setState({
-                isReadOnly: !this.state.isReadOnly, //change readonly
-                label: 'Done' //  change label
-            });
-            this.refEdit.focus(); // focus the editElement
+    editItemHandler = (index) => {
+        const selectedItem = this.state.items.filter((item,i) => i === index);
+        if (selectedItem[0].btnLabel === 'Edit') {
+            selectedItem[0].btnLabel = 'Done';
+            selectedItem[0].isReadOnly = !selectedItem[0].isReadOnly;
+            this.setState(() => ({...this.state.items, selectedItem}) ); //merge it with state.
+            this.refEdit.focus();
         } else {
-            const changedItem = this.state.items.filter((item,i) => item.key === key);
-            changedItem[0].todoText = this.refEdit.value;
-            
-            this.setState(() => ({...this.state.items, changedItem}) ); //merge it with state.
-            this.setState({label: 'Edit', isReadOnly: !this.state.isReadOnly});
+            selectedItem[0].btnLabel = 'Edit';
+            selectedItem[0].isReadOnly = !selectedItem[0].isReadOnly;
+            this.setState(() => ({...this.state.items, selectedItem}) ); //merge it with state.
         }
+        console.log(selectedItem);
+    }
+
+    /**
+    * TODO : Edit todoText from the list
+    * @param index is from the state. Its rendered with map method in <TodoItem />.
+    */
+    editTextHandler = (e, index) => {
+        const selectedItem = this.state.items.filter((item,i) => i === index);
+        selectedItem[0].todoText = e.target.value;
+        this.setState(() => ({...this.state.items, selectedItem}) ); //merge it with state.
     }
 
     render() {
@@ -76,7 +87,7 @@ export default class TodoList extends Component {
                 <TodoItems data={this.state.items}
                            delete={this.deleteItemHandler}
                            edit={this.editItemHandler}
-                           readonly={this.state.isReadOnly}
+                           change={this.editTextHandler}
                            refEdit={el => this.refEdit = el}
                            label={this.state.label} />
             </div>
