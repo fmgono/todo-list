@@ -4,9 +4,7 @@ import TodoItems from './TodoItem';
 export default class TodoList extends Component {
     // Declare our state
     state = {
-        items: [], //for list of todo Item
-        isReadOnly: true, // for input type attribute
-        label: 'Edit' //for button label
+        items: [] //for list of todo Item
     }
 
     /**
