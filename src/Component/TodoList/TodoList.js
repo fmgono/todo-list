@@ -53,18 +53,16 @@ export default class TodoList extends Component {
     * @param index is from the state. Its rendered with map method in <TodoItem />.
     */
     editItemHandler = (index) => {
-        const selectedItem = this.state.items.filter((item,i) => i === index);
-        if (selectedItem[0].btnLabel === 'Edit') {
-            selectedItem[0].btnLabel = 'Done';
-            selectedItem[0].isReadOnly = !selectedItem[0].isReadOnly;
-            this.setState(() => ({...this.state.items, selectedItem}) ); //merge it with state.
-            this.refEdit.focus();
+        const itemCopy = this.state.items; // make a copy from state
+        if (itemCopy[index].btnLabel === 'Edit') {
+          itemCopy[index].btnLabel = 'Done';
+          itemCopy[index].isReadOnly = !itemCopy[index].isReadOnly;
+          this.setState({items: itemCopy})
         } else {
-            selectedItem[0].btnLabel = 'Edit';
-            selectedItem[0].isReadOnly = !selectedItem[0].isReadOnly;
-            this.setState(() => ({...this.state.items, selectedItem}) ); //merge it with state.
+          itemCopy[index].btnLabel = 'Edit';
+          itemCopy[index].isReadOnly = !itemCopy[index].isReadOnly;
+          this.setState({items: itemCopy})
         }
-        console.log(selectedItem);
     }
 
     /**
@@ -72,9 +70,9 @@ export default class TodoList extends Component {
     * @param index is from the state. Its rendered with map method in <TodoItem />.
     */
     editTextHandler = (e, index) => {
-        const selectedItem = this.state.items.filter((item,i) => i === index);
-        selectedItem[0].todoText = e.target.value;
-        this.setState(() => ({...this.state.items, selectedItem}) ); //merge it with state.
+        const itemCopy = this.state.items; // make a copy from state
+        itemCopy[index].todoText = e.target.value;
+        this.setState({items: itemCopy});
     }
 
     render() {
